@@ -206,7 +206,7 @@ $(function () {
 
     if ((1640 < screen.width) && (screen.width < 1910)) {
       // alert(screen.width);
-      $("#downloads .downloadsContainer .downloadsContainerLeft .dlist li:nth-child(3)").css({"line-height": "25px"});
+      $("#downloads .downloadsContainer .downloadsContainerLeft .dlist li:nth-child(3)").css({"line-height": "25px","padding-top": "5px"});
     }
   }
 

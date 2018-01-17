@@ -1,4 +1,40 @@
 $(function () {
+  //检测浏览器语言
+  currentLang = navigator.language;   //判断除IE外其他浏览器使用语言
+  if (!currentLang) {//判断IE浏览器使用语言
+    currentLang = navigator.browserLanguage;
+  }
+
+  // alert(currentLang);
+
+  //判断访问终端
+  var browser = {
+    versions: function () {
+      var u = navigator.userAgent, app = navigator.appVersion;
+      return {
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+        iPad: u.indexOf('iPad') > -1, //是否iPad
+        webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+      };
+    }(),
+    language: (navigator.browserLanguage || navigator.language).toLowerCase()
+  };
+
+  //browser.versions.trident返回真假，真则是IE内核，以此类推browser.versions.webKit是否为谷歌内核
+  if (browser.versions.trident) {
+    // alert("is IE");
+  }
+  if (browser.versions.webKit) {
+    // alert("is webKit");
+  }
+
   var languageFlag, getCookieKey;
   languageFlag = "languageFlag";
   getCookieKey = getCookie(languageFlag);
@@ -8,28 +44,25 @@ $(function () {
     // console.log(window.flag);
     if (getCookieKey == 0) {
       loadProperties("strings_en");
-      $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/uk.png");
-      $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/china.png");
-      $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("English");
-      $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("中文简体");
+      changeEn();
       window.flag = 0;
     } else {
       loadProperties("strings_zh-CN");
-      $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/china.png");
-      $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/uk.png");
-      $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("中文简体");
-      $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("English");
+      changeZh();
       window.flag = 1;
     }
 
   } else {
-    // alert("b" + getCookieKey);
-    $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/uk.png");
-    $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/china.png");
-    $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("English");
-    $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("中文简体");
-    loadProperties("strings_en");
-    window.flag = 1;
+    if (currentLang == "zh-CN") {
+      changeZh();
+      loadProperties("strings_zh-CN");
+      window.flag = 0;
+    } else {
+      changeEn();
+      loadProperties("strings_en");
+      window.flag = 1;
+    }
+
   }
 
 
@@ -46,24 +79,29 @@ $(function () {
     }
   }
 
+  function changeEn() {
+    $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/uk.png");
+    $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/china.png");
+    $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("English");
+    $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("中文简体");
+  }
+
+  function changeZh() {
+    $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/china.png");
+    $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/uk.png");
+    $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("中文简体");
+    $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("English");
+  }
+
 
   $(".switchLanguageBtn .btnContainer .btn2").click(function () {
-    // alert(window.flag);
     if (flag == 1) {
-      // alert(window.flag);
-      $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/uk.png");
-      $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/china.png");
-      $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("English");
-      $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("中文简体");
+      changeEn();
       loadProperties("strings_en");
       window.flag = 0;
       setCookie(languageFlag, flag);
     } else {
-      // alert(window.flag);
-      $(".switchLanguageBtn .btnContainer .btn1 .btnFlag1 img").attr("src", "images/china.png");
-      $(".switchLanguageBtn .btnContainer .btn2 .btnFlag2 img").attr("src", "images/uk.png");
-      $(".switchLanguageBtn .btnContainer .btn1  .btnText1").html("中文简体");
-      $(".switchLanguageBtn .btnContainer .btn2  .btnText2").html("English");
+      changeZh();
       loadProperties("strings_zh-CN");
       window.flag = 1;
       setCookie(languageFlag, flag);

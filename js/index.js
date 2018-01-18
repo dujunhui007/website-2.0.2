@@ -129,7 +129,11 @@ $(document).ready(function () {
     }),
 
     $("#application .applicationContainer .applicationCenter ul .toCctimePage").click(function () {
-      // window.location.href = "aschVideo.html";
+      window.open("dapp1.html");
+    }),
+
+    $("#applicationDetailMore1").click(function () {
+      event.stopPropagation();
       window.open("dapp1.html");
     }),
 
@@ -137,11 +141,26 @@ $(document).ready(function () {
       window.open("dapp2.html");
     }),
 
+    $("#applicationDetailMore2").click(function () {
+      event.stopPropagation();
+      window.open("dapp2.html");
+    }),
+
     $("#application .applicationContainer .applicationCenter ul .toBbPage").click(function () {
       window.open("dapp3.html");
     }),
 
+    $("#applicationDetailMore3").click(function () {
+      event.stopPropagation();
+      window.open("dapp3.html");
+    }),
+
     $("#application .applicationContainer .applicationCenter ul .toHelloPage").click(function () {
+      window.open("dapp4.html");
+    }),
+
+    $("#applicationDetailMore4").click(function () {
+      event.stopPropagation();
       window.open("dapp4.html");
     })
 
